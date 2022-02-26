@@ -1,5 +1,4 @@
 const express = require('express');
-const res = require('express/lib/response');
 const { v4: uuidV4 } = require('uuid');
 
 
@@ -39,6 +38,10 @@ app.get('/statement/:cpf', (request, response) => {
     const { cpf } = request.params;
 
     const customer = customers.find((customer) => customer.cpf === cpf);
+
+    if (!customer) {
+        return response.status(400).json({ error: "Customer not found" });
+    }
 
     return response.json(customer.statement);
 });
